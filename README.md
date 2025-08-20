@@ -1,8 +1,7 @@
 # tong_system
 [Intelligent Systems and Informatics Laboratory](https://www.isi.imi.i.u-tokyo.ac.jp/?lang=ja), The University of Tokyo
 
-<img src="image.jpg" alt="image" height="300"/>
-<img src="image2.png" alt="image" height="300"/>
+<img src="image.jpg" alt="image" height="200"/> <img src="image2.png" alt="image" height="200"/>
 
 
 

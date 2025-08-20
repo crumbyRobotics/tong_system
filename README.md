@@ -46,6 +46,8 @@ python setup.py build_ext --inplace
 ```
 
 ## Run with tongsim
+<div><video controls loop src="https://github.com/user-attachments/assets/43824e43-4a4b-493b-817c-469bd70ed6d3" muted="true" width=200></video></div>
+
 1. git clone [tong_simulator repository](https://github.com/crumbyRobotics/tong_simulator) & setup following its README.
 2. Launch tongsim in terminal 1: 
     ```

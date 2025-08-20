@@ -1,0 +1,19 @@
+//shared parameters
+max_vel_a_division:2.0
+p_err_division:1e-3
+time_sec_division:.5
+wait_time_division:100
+
+max_vel_a_gripper:1.0
+p_err_gripper:1e-4
+time_sec_gripper:.2
+wait_time_gripper:100
+
+max_vel_a_move:1.0
+p_err_move:1e-4
+gp_err_move:1e-4
+time_sec_move:0.50
+wait_time_move:100
+
+pan:0.0
+tilt:-0.9

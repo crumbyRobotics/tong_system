@@ -1,0 +1,7 @@
+numpy<2.3.0 # 2.3.0 or later require newer GCC versions
+pyzmq
+gym<0.25.0
+opencv-python
+Cython
+h5py
+pynput

@@ -1,0 +1,17 @@
+max_vel_a_division:1.
+p_err_division:1e-3
+time_sec_division:1.0
+wait_time_division:1000
+
+max_vel_a_gripper:0.5
+p_err_gripper:1e-4
+time_sec_gripper:0.10
+wait_time_gripper:100
+
+max_vel_a_move:0.5
+p_err_move:1e-3
+time_sec_move:0.02
+wait_time_move:20
+
+pan:0.0
+tilt:-0.9

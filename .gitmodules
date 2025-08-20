@@ -1,0 +1,3 @@
+[submodule "ikfastpy"]
+	path = ikfastpy
+	url = https://github.com/crumbyRobotics/ikfastpy.git

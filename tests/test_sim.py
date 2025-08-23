@@ -62,7 +62,11 @@ def main(num_demos: int, max_step: int, viewer: bool, create_demos: bool, log_di
 
             action, end = controller.control(obs["state"][:16], world_state["box1"]["position"], [0.01, 0.03, 0.02])
 
-            dummy_gaze = np.floor(world_state["box1"]["pixel"] * np.array([env.image_width, env.image_height, env.image_width, env.image_height]))
+            if controller.mode < 2 and world_state["box1"]["position"][2] < 0.73:
+                dummy_gaze = np.floor(world_state["box1"]["pixel"] * np.array([env.image_width, env.image_height, env.image_width, env.image_height]))
+            else:
+                dummy_gaze = np.floor(world_state["box2"]["pixel"] * np.array([env.image_width, env.image_height, env.image_width, env.image_height]))
+            dummy_gaze += np.random.randint(-5, 6, size=dummy_gaze.shape)
 
             next_obs, _, _, _ = env.step(action[:7], dummy_gaze)
 
@@ -92,7 +96,7 @@ def main(num_demos: int, max_step: int, viewer: bool, create_demos: bool, log_di
 
 
 if __name__ == "__main__":
-    num_demos = 300
+    num_demos = 110
     max_step = 250
     use_viewer = True
     sync_realtime = False

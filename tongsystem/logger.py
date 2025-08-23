@@ -41,8 +41,15 @@ class Logger:
         self.ds["right_img"].append(right_image)
         self.ds["depth_img"].append(obs["depth"].transpose((1, 2, 0)))  # (H, W, 1), uint16
 
-        self.ds["left_sensor"].append(obs["state"][-26:-13])  # (12+1,)  # TODO Match the number of sensor dimensions with the real robot. (12*2+1,)
-        self.ds["right_sensor"].append(obs["state"][-13:])  # (12+1,)
+        if len(obs["state"]) > 80:
+            # Real robot case
+            self.ds["left_sensor"].append(obs["state"][-50:-25])  # (12*2+1,)
+            self.ds["right_sensor"].append(obs["state"][-25:])  # (12*2+1,)
+
+        else:
+            # Simulated robot case
+            self.ds["left_sensor"].append(obs["state"][-26:-13])  # (12+1,)  # TODO Match the number of sensor dimensions with the real robot.
+            self.ds["right_sensor"].append(obs["state"][-13:])  # (12+1,)
 
         if gaze is not None:
             self.ds["gaze"].append(gaze.astype(np.int64))

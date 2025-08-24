@@ -75,6 +75,10 @@ class AbstTongSystem(gym.Env, ABC):
 
         self.last_step_time = None
 
+        # Conversion of state w.r.t self.state_type
+        if self.state_type == "pos":
+            obs["state"][:16] = self.solve_fk(obs["state"][:16])
+
         return obs
 
     @abstractmethod
@@ -140,6 +144,10 @@ class AbstTongSystem(gym.Env, ABC):
         # Log
         self.logger.stack(self.last_step_time, next_obs, action, gaze)
 
+        # Conversion of state w.r.t self.state_type
+        if self.state_type == "pos":
+            next_obs["state"][:16] = self.solve_fk(next_obs["state"][:16])
+
         return next_obs, reward, done, info
 
     def _get_obs(self) -> dict[str, np.ndarray]:
@@ -158,12 +166,7 @@ class AbstTongSystem(gym.Env, ABC):
         obs["depth"] = SbSResultD.reshape(1, *SbSResultD.shape)  # (C=1, H, W), [0mm, inf), depth image from left camera view
 
         self._latest_obs = deepcopy(obs)
-
         self._latest_world_state = deepcopy(world_state)
-
-        # Conversion of state w.r.t self.state_type
-        if self.state_type == "pos":
-            obs["state"][:16] = self.solve_fk(obs["state"][:16])
 
         return obs
 

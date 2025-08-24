@@ -1,4 +1,5 @@
 import os
+from copy import copy, deepcopy
 import numpy as np
 from typing import Optional
 from datetime import datetime
@@ -14,7 +15,11 @@ class Logger:
 
         self.reset()
 
-    def stack(self, time: float, obs: dict[str, np.ndarray], action: np.ndarray, gaze: Optional[np.ndarray] = None):
+    def stack(self, time: float, obs_: dict[str, np.ndarray], action_: np.ndarray, gaze_: Optional[np.ndarray] = None):
+        obs = deepcopy(obs_)
+        action = copy(action_)
+        gaze = None if gaze_ is None else copy(gaze_)
+
         self.ds["time"].append(time)
 
         self.ds["head_state"].append(obs["state"][14:16])

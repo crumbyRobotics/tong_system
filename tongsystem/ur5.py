@@ -88,65 +88,10 @@ class UR5Manager:
             return ref
 
         n_solutions = int(len(joint_configs) / self.n_joints)
-        for i in range(len(joint_configs)):
-            if joint_configs[i] > np.pi:
-                joint_configs[i] -= 2 * np.pi
-            elif joint_configs[i] < -np.pi:
-                joint_configs[i] += 2 * np.pi
         joint_configs = np.asarray(joint_configs).reshape(n_solutions, self.n_joints)
-        args_mse_joint = np.argmin(np.sum((joint_configs - ref_joint.reshape(1, -1)) ** 2, axis=1))
+        joint_diff = joint_configs - ref_joint.reshape(1, -1)
+        joint_diff_mod_pi = (joint_diff + np.pi) % (2 * np.pi) - np.pi
+        args_mse_joint = np.argmin(np.linalg.norm(joint_diff_mod_pi, axis=1))
         out = joint_configs[args_mse_joint]
         # out = np.concatenate((out, np.array([cmd[6]])), axis=0)
         return out
-
-    # def solve_fk_9(self, pos):
-    #     leng = 0.05
-    #     c0 = np.eye(4)
-    #     c1 = np.eye(4)
-    #     c0[:3, 3] = np.array([leng, 0., 0.])
-    #     c1[:3, 3] = np.array([0., leng, 0.])
-
-    #     ee_pose = self.ur5_kin.forward(pos[:6])
-    #     ee_pose = np.asarray(ee_pose).reshape(3, 4)
-    #     ee_pose = np.concatenate((ee_pose, np.array([[0, 0, 0, 1]])), axis=0)
-    #     c0 = np.matmul(ee_pose, c0)
-    #     c1 = np.matmul(ee_pose, c1)
-    #     p = ee_pose[:3, 3]
-    #     v0 = c0[:3, 3] - p
-    #     v1 = c1[:3, 3] - p
-    #     n_pos = np.concatenate((v0, v1, p)).tolist()
-    #     return np.asarray(n_pos)
-
-    # def solve_ik_9(self, cmd, ref):
-    #     leng = 0.05
-    #     inv_leng = 1 / leng
-    #     v0, v1, pos = cmd[:3], cmd[3:6], cmd[6:9]
-    #     # re-calculate the vector to be unit vector
-    #     v2 = np.cross(v0, v1)
-    #     v1 = np.cross(v2, v0)
-    #     v0 = v0 / np.linalg.norm(v0) * leng
-    #     v1 = v1 / np.linalg.norm(v1) * leng
-    #     v2 = v2 / np.linalg.norm(v2) * leng
-
-    #     R = np.eye(3)
-    #     R[:3, 0] = v0 * inv_leng
-    #     R[:3, 1] = v1 * inv_leng
-    #     R[:3, 2] = v2 * inv_leng
-    #     ref_joint = ref[:6]
-    #     ee_pose = np.concatenate((R, pos.reshape(3, 1)), axis=1)
-    #     joint_configs = self.ur5_kin.inverse(ee_pose.reshape(-1).tolist())
-    #     # exception when ik faiulre
-    #     if joint_configs == []:
-    #         print("warning: no IK solution found!")
-    #         return np.zeros_like(ref)
-
-    #     n_solutions = int(len(joint_configs) / self.n_joints)
-    #     for i in range(len(joint_configs)):
-    #         if joint_configs[i] > np.pi:
-    #             joint_configs[i] -= 2 * np.pi
-    #         elif joint_configs[i] < -np.pi:
-    #             joint_configs[i] += 2 * np.pi
-    #     joint_configs = np.asarray(joint_configs).reshape(n_solutions, self.n_joints)
-    #     args_mse_joint = np.argmin(np.sum((joint_configs - ref_joint.reshape(1, -1))**2, axis=1))
-    #     out = joint_configs[args_mse_joint]
-    #     return out
